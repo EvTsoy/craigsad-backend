@@ -24,9 +24,9 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::apiResource('ads', AdController::class)
     ->only('index', 'show');
 
-
-
 //Protected routes
-Route::apiResource('ads', AdController::class)->middleware('auth:sanctum')
-    ->only('store', 'update', 'destroy');
-Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('ads', AdController::class)
+        ->only('store', 'update', 'destroy');
+    Route::get('user', [AuthController::class, 'user']);
+});
