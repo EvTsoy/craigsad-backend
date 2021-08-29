@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\v1\AdController;
+use App\Http\Controllers\Api\v1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Auth routes
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+
+//Common routes
+Route::apiResource('ads', AdController::class)
+    ->only('index', 'show');
+
+
+
+//Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('ads', AdController::class)
+        ->only('store', 'update', 'destroy');
+    Route::get('user', [AuthController::class, 'user']);
 });
