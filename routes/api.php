@@ -27,8 +27,6 @@ Route::apiResource('ads', AdController::class)
 
 
 //Protected routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('ads', AdController::class)
-        ->only('store', 'update', 'destroy');
-    Route::get('user', [AuthController::class, 'user']);
-});
+Route::apiResource('ads', AdController::class)->middleware('auth:sanctum')
+    ->only('store', 'update', 'destroy');
+Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
